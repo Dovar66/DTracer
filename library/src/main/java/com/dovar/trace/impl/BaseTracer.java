@@ -97,7 +97,10 @@ public abstract class BaseTracer implements ITracer {
         }
         do {
             --mLevel;
-            if (mLevel < 0) return;
+            if (mLevel < 0) {
+                mLevel = 0;
+                return;
+            }
         } while (!methodEquals(mNames[mLevel], method));//处理发生异常被捕获的场景
         long time = timestamp() - mTimes[mLevel]; // pop
         output(method, mLevel, time);
