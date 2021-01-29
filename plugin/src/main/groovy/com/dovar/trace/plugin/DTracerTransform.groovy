@@ -44,6 +44,7 @@ class DTracerTransform extends Transform {
 
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
+        long ts = System.currentTimeMillis()
         if (ext == null) {
             ext = project.extensions.DTracer
         }
@@ -90,6 +91,7 @@ class DTracerTransform extends Transform {
                 FileUtils.copyDirectory(dirInput.file, dest)
             }
         }
+        LogUtils.info("total time: ${System.currentTimeMillis() - ts}")
     }
 
     private void processClass(ClassPool pool, String className, String outDir) {
