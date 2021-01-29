@@ -1,0 +1,25 @@
+buildscript {
+
+    repositories {
+        jcenter()
+        google()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.2'
+        //本地方式：直接引用plugin模块编译生成的jar文件
+        classpath files('plugin/output/plugin.jar')
+        classpath 'org.javassist:javassist:3.20.0-GA'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        google()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
