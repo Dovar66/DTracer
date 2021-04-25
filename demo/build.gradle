@@ -1,10 +1,16 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
 apply plugin: 'DTracerPlugin'
 DTracer {
     // 指定要处理的完整类名，支持正则表达式匹配，可以过滤特定的包
     // 不指定则默认处理所有类
-    processClassesRegex 'com\\.dovar\\.demo.*'
+//    processClassesRegex 'com\\.dovar\\.demo.*'
+
+    processPackages 'com.dovar.demo','com.dovar.test'
 }
 
 android {
@@ -31,4 +37,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation project(path: ':library')
+
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.4.10'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.10'
 }

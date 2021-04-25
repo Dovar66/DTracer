@@ -6,10 +6,11 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:4.0.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
+
         //本地方式：直接引用plugin模块编译生成的jar文件
         classpath files('plugin/output/plugin.jar')
-        classpath 'org.javassist:javassist:3.20.0-GA'
     }
 }
 

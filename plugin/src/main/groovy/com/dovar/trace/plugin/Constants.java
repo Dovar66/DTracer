@@ -9,4 +9,6 @@ interface Constants {
     String TRACER_PACKAGE = "com.dovar.trace";
     String DEFAULT_METHOD_START = "com.dovar.trace.DTracer.methodStart(\"<class-name>.<method-name>\");";
     String DEFAULT_METHOD_END = "com.dovar.trace.DTracer.methodEnd(\"<class-name>.<method-name>\");";
+    String TRACER_CLASS = "com/dovar/trace/DTracer";
+
 }

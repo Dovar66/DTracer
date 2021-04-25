@@ -1,12 +1,12 @@
 package com.dovar.trace.impl;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.dovar.trace.ITracer;
 
 import java.util.Arrays;
 
-// TODO: 2021-01-25 需要处理发生异常被捕获的场景
 public abstract class BaseTracer implements ITracer {
 
     public final String TAG = getClass().getSimpleName();
@@ -34,6 +34,13 @@ public abstract class BaseTracer implements ITracer {
      * 是否启动
      */
     protected boolean mEnable = false;
+
+    /**
+     * 要不要输出error
+     */
+    private boolean logError = true;
+
+    private boolean spaceLevel = true;
 
     public BaseTracer(int maxLevel) {
         mMaxLevel = maxLevel;
@@ -82,7 +89,7 @@ public abstract class BaseTracer implements ITracer {
             return;
         }
         if (mLevel >= mMaxLevel) {
-            err("max level exceeded, maxLevel = " + mMaxLevel);
+            err("max level[" + mMaxLevel + "] exceeded: " + method);
             return;
         }
         mTimes[mLevel] = timestamp(); // push
@@ -95,6 +102,7 @@ public abstract class BaseTracer implements ITracer {
         if (!mEnable || mLevel <= 0 || !checkMatchEnd(method)) {
             return;
         }
+        if (!checkContains(method)) return;
         do {
             --mLevel;
             if (mLevel < 0) {
@@ -104,6 +112,14 @@ public abstract class BaseTracer implements ITracer {
         } while (!methodEquals(mNames[mLevel], method));//处理发生异常被捕获的场景
         long time = timestamp() - mTimes[mLevel]; // pop
         output(method, mLevel, time);
+    }
+
+    private boolean checkContains(String method) {
+        if (TextUtils.isEmpty(method)) return false;
+        for (String mName : mNames) {
+            if (method.equals(mName)) return true;
+        }
+        return false;
     }
 
     /**
@@ -139,15 +155,25 @@ public abstract class BaseTracer implements ITracer {
     }
 
     protected void err(String msg, Object... args) {
+        if (!logError) return;
         Log.e(TAG, String.format(msg, args));
     }
 
     private String space(int level) {
+        if (!spaceLevel) return "level[" + level + "]\t";
         if (level <= 0) {
             return "";
         }
         char[] chars = new char[level];
         Arrays.fill(chars, '\t');
         return new String(chars);
+    }
+
+    public void setLogError(boolean enable) {
+        logError = enable;
+    }
+
+    public void setSpaceLevel(boolean space) {
+        spaceLevel = space;
     }
 }

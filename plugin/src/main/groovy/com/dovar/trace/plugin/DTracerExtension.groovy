@@ -11,6 +11,8 @@ class DTracerExtension {
      */
     String processClassesRegex = null
 
+    String[] processPackages = null
+
     // 跳过方法
     Boolean skipConstructor = false
     Boolean skipStaticMethod = false
